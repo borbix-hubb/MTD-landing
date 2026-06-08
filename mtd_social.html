@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTD — Money Talk Trader</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold-light: #FFF0BE;
+    --gold:       #D4A84B;
+    --gold-bright:#FFD84D;
+    --gold-dark:  #A07830;
+    --amber:      #F5941E;
+    --bg:         #2B1A08;
+    --bg-card:    #3A2410;
+    --bg-card2:   #332010;
+    --border:     #6B4520;
+    --border-light:#8A5A2A;
+    --text:       #F0DBA0;
+    --text-sub:   #C4956A;
+    --text-muted: #8A6840;
+    --glow:       rgba(255,200,60,0.3);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 110% 55% at 50% -5%, rgba(255,195,60,0.16) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 15% 90%, rgba(200,130,40,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 85% 60%, rgba(240,100,20,0.06) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      radial-gradient(circle 1.5px at 12% 22%, rgba(255,220,80,0.55) 0%, transparent 2px),
+      radial-gradient(circle 1px at 88% 14%, rgba(255,200,70,0.45) 0%, transparent 1px),
+      radial-gradient(circle 2px at 72% 72%, rgba(255,180,50,0.4) 0%, transparent 2px),
+      radial-gradient(circle 1px at 28% 82%, rgba(255,210,60,0.35) 0%, transparent 1px),
+      radial-gradient(circle 1px at 92% 50%, rgba(255,220,80,0.45) 0%, transparent 1px),
+      radial-gradient(circle 1.5px at 8% 60%, rgba(255,180,50,0.35) 0%, transparent 2px),
+      radial-gradient(circle 1px at 50% 8%, rgba(255,210,60,0.4) 0%, transparent 1px);
+    pointer-events: none;
+    animation: twinkle 3.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.35; }
+    to   { opacity: 1; }
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 430px; margin: 0 auto;
+    padding: 0 1.2rem 3.5rem;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 2.75rem 0 1.75rem;
+    animation: fadeDown 0.75s ease both;
+  }
+
+  .logo-ring {
+    width: 124px; height: 124px;
+    border-radius: 50%;
+    padding: 3px;
+    margin: 0 auto 1.3rem;
+    background: conic-gradient(from 0deg,
+      #7A4E10, #D4A84B, #FFD84D, #F5941E, #FFD84D, #D4A84B, #7A4E10);
+    box-shadow: 0 0 36px rgba(255,195,60,0.38), 0 0 70px rgba(245,148,30,0.14);
+    animation: spinGold 12s linear infinite;
+  }
+  @keyframes spinGold {
+    to { filter: hue-rotate(15deg); }
+  }
+  .logo-ring-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 2px solid rgba(0,0,0,0.35);
+    background: #1A0C02;
+  }
+  .logo-ring-inner img {
+    width: 100%; height: 100%;
+    border-radius: 50%; object-fit: cover; display: block;
+  }
+
+  .brand {
+    font-family: 'Cinzel', serif;
+    font-size: 34px; font-weight: 700;
+    letter-spacing: 0.14em; line-height: 1;
+    background: linear-gradient(160deg, #FFF5D0 0%, #FFD84D 35%, #F5941E 65%, #D4A84B 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 14px rgba(255,200,50,0.45));
+  }
+  .brand-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.38em;
+    color: var(--gold); margin-top: 7px; opacity: 0.9;
+  }
+
+  .divider-line {
+    width: 90px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-bright), var(--amber), var(--gold-bright), transparent);
+    margin: 1rem auto;
+    box-shadow: 0 0 8px var(--glow);
+  }
+
+  .tagline { font-size: 13px; color: var(--text-sub); letter-spacing: 0.04em; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 10px; letter-spacing: 0.3em;
+    color: var(--amber);
+    text-align: center;
+    margin: 2rem 0 1rem;
+    text-shadow: 0 0 12px rgba(245,148,30,0.5);
+    animation: fadeUp 0.6s ease both;
+    animation-delay: 0.1s;
+  }
+
+  /* ── FACEBOOK PAGE CARD ── */
+  .page-card {
+    background: linear-gradient(150deg, #3E2812 0%, #4A2E14 50%, #3A2210 100%);
+    border: 1px solid var(--border-light);
+    border-radius: 22px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,200,60,0.07);
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.15s;
+  }
+  .page-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), var(--gold-bright), var(--amber), transparent);
+    box-shadow: 0 0 14px rgba(245,148,30,0.35);
+  }
+
+  .page-inner { display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+
+  .fb-icon-box {
+    width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+    background: linear-gradient(145deg, #1a73e8 0%, #1057c0 100%);
+    box-shadow: 0 5px 20px rgba(24,119,242,0.45), 0 0 28px rgba(24,119,242,0.18);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fb-icon-box svg { width: 30px; height: 30px; fill: #fff; }
+
+  .page-name {
+    font-size: 15px; font-weight: 600;
+    color: var(--gold-light); margin-bottom: 4px; line-height: 1.3;
+  }
+  .page-desc { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+  .fb-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(24,119,242,0.14);
+    border: 1px solid rgba(24,119,242,0.32);
+    border-radius: 20px; padding: 3px 9px;
+    font-size: 10px; color: #7FBFFF; margin-top: 5px;
+    font-weight: 500;
+  }
+  .fb-badge::before { content: '●'; font-size: 7px; color: #5AF; }
+
+  .btn-follow {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 14px 0;
+    background: linear-gradient(135deg, #1877F2 0%, #1260D4 60%, #0F52B8 100%);
+    border: none; border-radius: 14px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 15px; font-weight: 600;
+    color: #fff; cursor: pointer; text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 22px rgba(24,119,242,0.45), 0 0 32px rgba(24,119,242,0.16);
+    letter-spacing: 0.01em;
+  }
+  .btn-follow:hover {
+    background: linear-gradient(135deg, #3A8DFF 0%, #1877F2 60%, #1260D4 100%);
+    box-shadow: 0 8px 32px rgba(24,119,242,0.6), 0 0 44px rgba(24,119,242,0.28);
+    transform: translateY(-2px);
+  }
+  .btn-follow:active { transform: translateY(0); }
+  .btn-follow svg { width: 20px; height: 20px; }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #5EE85E; box-shadow: 0 0 7px #5EE85E;
+    animation: blink 1.8s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.45; transform:scale(0.65); }
+  }
+
+  /* ── DIVIDER ── */
+  .row-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 1.25rem;
+  }
+  .row-divider::before, .row-divider::after {
+    content: ''; flex: 1; height: 1px;
+  }
+  .row-divider::before { background: linear-gradient(90deg, transparent, var(--border-light)); }
+  .row-divider::after  { background: linear-gradient(90deg, var(--border-light), transparent); }
+  .row-divider span {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-muted); white-space: nowrap;
+  }
+
+  /* ── PERSON CARD ── */
+  .person-card {
+    background: linear-gradient(150deg, #3C2410 0%, #452A12 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 1.3rem;
+    margin-bottom: 0.9rem; position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.28);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+    animation: fadeUp 0.6s ease both;
+  }
+  .person-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-light);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.36), 0 0 24px rgba(212,168,75,0.1);
+  }
+  .person-card:nth-child(1) { animation-delay: 0.2s; }
+  .person-card:nth-child(2) { animation-delay: 0.3s; }
+  .person-card:nth-child(3) { animation-delay: 0.4s; }
+  .person-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dark), var(--gold), var(--gold-dark), transparent);
+  }
+
+  .person-head { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+  .avatar {
+    width: 58px; height: 58px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(255,200,60,0.18), rgba(200,140,40,0.1));
+    padding: 2px;
+    background: conic-gradient(from 0deg, var(--gold-dark), var(--gold-bright), var(--amber), var(--gold-bright), var(--gold-dark));
+    box-shadow: 0 0 16px rgba(255,200,60,0.28);
+  }
+  .avatar-inner {
+    width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+    border: 2px solid var(--bg-card);
+  }
+  .avatar-inner img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
+  }
+  .person-name { font-size: 16px; font-weight: 600; color: var(--gold-light); margin-bottom: 3px; }
+  .person-role { font-size: 11px; color: var(--text-muted); letter-spacing: 0.03em; }
+
+  .social-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 9px; }
+
+  .social-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 13px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+    border-radius: 13px; text-decoration: none; cursor: pointer;
+    transition: all 0.2s ease; position: relative; overflow: hidden;
+  }
+  .social-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 18px rgba(0,0,0,0.32); }
+  .social-btn.tiktok:hover { border-color: rgba(105,201,208,0.4); background: rgba(105,201,208,0.04); }
+  .social-btn.facebook:hover { border-color: rgba(24,119,242,0.4); background: rgba(24,119,242,0.05); }
+  .social-btn:active { transform: translateY(0); }
+
+  /* TikTok icon box — real brand colours */
+  .icon-box {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-box.tt { background: #010101; box-shadow: 0 0 10px rgba(238,29,82,0.18), 0 0 10px rgba(105,201,208,0.18); }
+  .icon-box.fb { background: linear-gradient(145deg, #1a73e8, #1057c0); box-shadow: 0 0 10px rgba(24,119,242,0.28); }
+  .icon-box svg { width: 20px; height: 20px; }
+
+  /* TikTok dual-shadow logo */
+  .tt-logo {
+    position: relative; width: 20px; height: 20px;
+  }
+  .tt-logo path.tt-main  { fill: #fff; }
+  .tt-logo path.tt-cyan  { fill: #69C9D0; mix-blend-mode: normal; opacity: 0.85; }
+  .tt-logo path.tt-red   { fill: #EE1D52; mix-blend-mode: normal; opacity: 0.85; }
+
+  .sl { display: flex; flex-direction: column; overflow: hidden; }
+  .sl-name { font-size: 12px; font-weight: 600; color: var(--gold-light); line-height: 1.3; }
+  .sl-handle { font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 1.75rem 0 0; }
+  footer p { font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-ring">
+      <div class="logo-ring-inner">
+        <img src="Logo.jpg" alt="MTD Logo">
+      </div>
+    </div>
+    <div class="brand">MTD</div>
+    <div class="brand-sub">Money Talk Trader</div>
+    <div class="divider-line"></div>
+    <p class="tagline">ติดตามเราได้ทุกช่องทาง</p>
+  </header>
+
+  <!-- FACEBOOK PAGE -->
+  <div class="section-label">✦ เพจหลัก ✦</div>
+
+  <div class="page-card">
+    <div class="page-inner">
+      <div class="fb-icon-box">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </div>
+      <div>
+        <div class="page-name">MoneyTalks x Trader</div>
+        <div class="page-desc">วิเคราะห์ตลาด · ข่าวสาร · ความรู้การลงทุน</div>
+        <div class="fb-badge">Facebook Page</div>
+      </div>
+    </div>
+    <a href="https://www.facebook.com/profile.php?id=61579158778523" target="_blank" class="btn-follow">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      กดถูกใจเพจเราเลย!
+      <div class="live-dot"></div>
+    </a>
+  </div>
+
+  <div class="row-divider"><span>ทีม Traders</span></div>
+
+  <!-- โค้ชหลิง -->
+  <div class="person-card">
+    <div class="person-head">
+      <div class="avatar"><div class="avatar-inner"><img src="หลิงprofile.png" alt="โค้ชหลิง" style="object-position:50% 20%; transform:scale(2); transform-origin:50% 20%;"></div></div>
+      <div><div class="person-name">โค้ชหลิง</div></div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.tiktok.com/@moneytalkstrader" target="_blank" class="social-btn tiktok">
+        <div class="icon-box tt"><svg class="tt-logo" viewBox="0 0 24 24"><path class="tt-cyan" transform="translate(-0.7,0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-red" transform="translate(0.7,-0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-main" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></div>
+        <div class="sl"><div class="sl-name">TikTok</div><div class="sl-handle">@moneytalkstrader</div></div>
+      </a>
+      <a href="https://www.tiktok.com/@meiling_siri" target="_blank" class="social-btn tiktok">
+        <div class="icon-box tt"><svg class="tt-logo" viewBox="0 0 24 24"><path class="tt-cyan" transform="translate(-0.7,0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-red" transform="translate(0.7,-0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-main" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></div>
+        <div class="sl"><div class="sl-name">TikTok</div><div class="sl-handle">@meiling_siri</div></div>
+      </a>
+      <a href="https://www.facebook.com/lilinpun.napatsapsakul" target="_blank" class="social-btn facebook">
+        <div class="icon-box fb"><svg viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+        <div class="sl"><div class="sl-name">Facebook</div><div class="sl-handle">โค้ชหลิง</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- โค้ชบิ้ว -->
+  <div class="person-card">
+    <div class="person-head">
+      <div class="avatar"><div class="avatar-inner"><img src="บิ้วprofile.png" alt="โค้ชบิ้ว" style="object-position:50% 25%; transform:scale(2); transform-origin:50% 25%;"></div></div>
+      <div><div class="person-name">โค้ชบิ้ว</div></div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.tiktok.com/@mtd.build" target="_blank" class="social-btn tiktok">
+        <div class="icon-box tt"><svg class="tt-logo" viewBox="0 0 24 24"><path class="tt-cyan" transform="translate(-0.7,0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-red" transform="translate(0.7,-0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-main" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></div>
+        <div class="sl"><div class="sl-name">TikTok</div><div class="sl-handle">@mtd.build</div></div>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61573367940641" target="_blank" class="social-btn facebook">
+        <div class="icon-box fb"><svg viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+        <div class="sl"><div class="sl-name">Facebook</div><div class="sl-handle">โค้ชบิ้ว</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- โค้ชบิ๊ก -->
+  <div class="person-card">
+    <div class="person-head">
+      <div class="avatar"><div class="avatar-inner"><img src="บิ๊กprofile.png" alt="โค้ชบิ๊ก" style="object-position:50% 18%; transform:scale(2); transform-origin:50% 18%;"></div></div>
+      <div><div class="person-name">โค้ชบิ๊ก</div></div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.tiktok.com/@mtd.borbix" target="_blank" class="social-btn tiktok">
+        <div class="icon-box tt"><svg class="tt-logo" viewBox="0 0 24 24"><path class="tt-cyan" transform="translate(-0.7,0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-red" transform="translate(0.7,-0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-main" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></div>
+        <div class="sl"><div class="sl-name">TikTok</div><div class="sl-handle">@mtd.borbix</div></div>
+      </a>
+      <a href="https://www.tiktok.com/@borbix.mtd" target="_blank" class="social-btn tiktok">
+        <div class="icon-box tt"><svg class="tt-logo" viewBox="0 0 24 24"><path class="tt-cyan" transform="translate(-0.7,0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-red" transform="translate(0.7,-0.4)" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/><path class="tt-main" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.77 0 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 12.67 0V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></div>
+        <div class="sl"><div class="sl-name">TikTok</div><div class="sl-handle">@borbix.mtd</div></div>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61574391462114" target="_blank" class="social-btn facebook">
+        <div class="icon-box fb"><svg viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+        <div class="sl"><div class="sl-name">Facebook</div><div class="sl-handle">โค้ชบิ๊ก</div></div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="divider-line" style="margin-bottom:1.1rem;"></div>
+    <p>© 2025 MTD — Money Talk Trader</p>
+  </footer>
+
+</div>
+</body>
+</html>
